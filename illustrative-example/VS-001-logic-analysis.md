@@ -42,3 +42,17 @@ instructions:
     - "Do not hallucinate facts outside the provided Context."
     - "Output must be formatted as a structured strategic plan."
     - "Save the generated strategic plan to 'company_job-title_description.md' derived from job description details."
+
+# CONTEXT MANIFEST: The "Bill of Materials" for this Value Story.
+# Defines what external files/data must be assembled by the script.
+
+context_manifest:
+  - key: "job_description"
+    description: "The full text of the target job description."
+    required: true
+    default_path: "illustrative-example/job-description.md"
+
+  - key: "raw_resume"
+    description: "The candidate's original, untailored resume."
+    required: true
+    default_path: "illustrative-example/raw-resume.md"
