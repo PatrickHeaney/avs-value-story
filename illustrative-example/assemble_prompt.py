@@ -52,11 +52,14 @@ def read_file(filename):
         return f.read()
 
 def main():
+    # Get the directory where the script is located
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+
     parser = argparse.ArgumentParser(description="Assemble an AVS Value Story from logic and context files.")
-    parser.add_argument("--logic", default="illustrative-example/VS-001-logic-analysis.md", help="Path to the logic (Goal/Instructions) MD/YAML file.")
-    parser.add_argument("--job", default="illustrative-example/job-description.md", help="Path to the Job Description MD file.")
-    parser.add_argument("--resume", default="illustrative-example/raw-resume.md", help="Path to the Raw Resume MD file.")
-    parser.add_argument("--output", default="illustrative-example/VS-001-assembled.yaml", help="Path to the output YAML file.")
+    parser.add_argument("--logic", default=os.path.join(base_dir, "VS-001-logic-analysis.md"), help="Path to the logic (Goal/Instructions) MD/YAML file.")
+    parser.add_argument("--job", default=os.path.join(base_dir, "job-description.md"), help="Path to the Job Description MD file.")
+    parser.add_argument("--resume", default=os.path.join(base_dir, "raw-resume.md"), help="Path to the Raw Resume MD file.")
+    parser.add_argument("--output", default=os.path.join(base_dir, "VS-001-assembled.yaml"), help="Path to the output YAML file.")
     
     args = parser.parse_args()
 
