@@ -28,7 +28,7 @@ graph TD
         Goal --> Automation
         Instructions --> Automation
         Context --> Automation
-        Automation --> Agentic-Agent
+        Automation --.YAML --> Agentic-Agent
         Agentic-Agent --> Product
         Business-Review <--> Product
         Business-Review --> Release

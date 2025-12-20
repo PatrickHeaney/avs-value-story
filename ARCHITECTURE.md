@@ -24,7 +24,7 @@ graph TD;
         G1[Goal] --> AT1[Automation]
         I1[Instructions] --> AT1
         C1[Initial Context] --> AT1
-        AT1 --> AA1[Agentic-Agent]
+        AT1 --.YAML --> AA1[Agentic-Agent]
         AA1 --> P1[Product: Research]
         P1 <--> BR1[Business-Review]
     end
@@ -35,7 +35,7 @@ graph TD;
         G2[Goal] --> AT2[Automation]
         I2[Instructions] --> AT2
         C2[Context: Research + Next Assets] --> AT2
-        AT2 --> AA2[Agentic-Agent]
+        AT2 --.YAML --> AA2[Agentic-Agent]
         AA2 --> P2[Product: Strategic Draft]
         P2 <--> BR2[Business-Review]
     end
