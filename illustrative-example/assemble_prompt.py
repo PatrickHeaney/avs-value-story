@@ -48,14 +48,15 @@ def read_file(filename):
 def main():
     # Get the directory where the script is located to resolve relative defaults
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    # The project root is one level up
+    # The project root is one level up (assuming script is in illustrative-example/)
     project_root = os.path.dirname(script_dir)
 
     parser = argparse.ArgumentParser(description="Assemble an AVS Value Story from logic and context files.")
     parser.add_argument("--logic", default=os.path.join(script_dir, "VS-001-logic-analysis.md"), 
                         help="Path to the logic (Goal/Instructions) MD/YAML file.")
-    parser.add_argument("--output", default=os.path.join(script_dir, "VS-001-assembled.yaml"), 
-                        help="Path to the output YAML file.")
+    # The --output argument will now represent just the filename, not the full path
+    parser.add_argument("--output", default="VS-001-assembled.yaml", 
+                        help="The filename for the assembled YAML output. The path will be determined by product.output_path in the logic file.")
     
     args = parser.parse_args()
 
@@ -90,7 +91,7 @@ def main():
 
             # Resolve path: 
             # If path is absolute, use it. 
-            # If relative, treat it as relative to the PROJECT ROOT (standard convention).
+            # If relative, treat it as relative to the PROJECT ROOT.
             if os.path.isabs(default_path):
                 file_path = default_path
             else:
@@ -129,9 +130,23 @@ def main():
         })
     }
 
-    # 4. Write the Assembled YAML
-    print(f"4. Writing output to '{args.output}'...")
-    with open(args.output, 'w') as f:
+    # 4. Determine output path and filename
+    output_dir = value_story['product'].get('output_path')
+    if not output_dir:
+        print("Warning: 'product.output_path' not found in logic file. Outputting to script's directory.")
+        final_output_path = os.path.join(script_dir, args.output)
+    else:
+        # Resolve output_dir relative to project root
+        if os.path.isabs(output_dir):
+            resolved_output_dir = output_dir
+        else:
+            resolved_output_dir = os.path.join(project_root, output_dir)
+        
+        os.makedirs(resolved_output_dir, exist_ok=True)
+        final_output_path = os.path.join(resolved_output_dir, args.output)
+
+    print(f"4. Writing output to '{final_output_path}'...")
+    with open(final_output_path, 'w') as f:
         f.write("# ==============================================================================\n")
         f.write("# AUTO-GENERATED VALUE STORY\n")
         f.write("# This file was assembled by 'assemble_prompt.py'\n")
@@ -139,7 +154,7 @@ def main():
         f.write("# ==============================================================================\n\n")
         yaml.dump(value_story, f, sort_keys=False, indent=2, width=80)
 
-    print(f"✅ Success! Assembled Value Story saved to: {args.output}")
+    print(f"✅ Success! Assembled Value Story saved to: {final_output_path}")
 
 if __name__ == "__main__":
     main()

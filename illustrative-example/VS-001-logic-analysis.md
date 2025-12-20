@@ -43,6 +43,12 @@ instructions:
     - "Output must be formatted as a structured strategic plan."
     - "Save the generated strategic plan to 'company_job-title_description.md' derived from job description details."
 
+product:
+  type: "Document"
+  format: "Markdown"
+  handoff_target: "VS-002-resume-generation"
+  output_path: "illustrative-example/outputs/vs-001"
+
 # CONTEXT MANIFEST: The "Bill of Materials" for this Value Story.
 # Defines what external files/data must be assembled by the script.
 
