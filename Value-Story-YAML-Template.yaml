@@ -41,12 +41,23 @@ instructions:
     - "Do not hallucinate facts outside the provided Context."
     - "Output must be formatted for [Business-Review/Release]."
 
+# CONTEXT MANIFEST: The "Bill of Materials" for this Value Story.
+# Defines what external files/data must be assembled by the automation layer.
+# (Used by assemble_prompt.py to populate the 'context' section below)
+
+context_manifest:
+  - key: "unique_key_for_asset"
+    description: "Description of what this file contains."
+    required: true
+    default_path: "./path/to/default/file.md"
+
 # CONTEXT: The antidote to hallucination.
 # Engineering 'The Information Hunt' out of the runtime loop.
 
 context:
   mandatory_assets:
     - name: "Asset Name"
+      # If using automation, these are populated from context_manifest
       mcp_uri: "mcp://[source]/[path]"  # URI
       alt_link: "https://[external-source-link]"
   implicit_knowledge_overrides:
