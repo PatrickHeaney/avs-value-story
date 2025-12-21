@@ -44,7 +44,9 @@ instructions:
     action: Output the final resume in clean, standard Markdown format.
     validation_rule: Output contains ONLY the resume content, no conversational filler.
   constraints:
-  - Do not invent new work history or degrees (hallucination check).
+  - You may strategically reframe and re-prioritize facts from the raw_resume You
+    MUST NOT invent, embellish, or infer any new facts, skills, metrics, or experiences
+    outside of this sources. This guardrail is absolute.
   - Do not remove the 'Education' section.
   - Save the generated resume to 'company_job-title_Tailored-Resume.md'.
 context:
@@ -55,36 +57,42 @@ context:
     source_file: illustrative-example/InnovateCorp_Senior-Product-Manager-AI-Solutions_Strategic-Plan.md
     content: "# Strategic Resume Tailoring Plan\n**Candidate:** John Doe\n**Target\
       \ Role:** Senior Product Manager - AI Solutions @ InnovateCorp\n\n## 1. Executive\
-      \ Summary Strategy\n**Goal:** Immediately establish John as a \"Technical Product\
-      \ Manager\" capable of bridging the gap between business and AI/ML engineering.\n\
-      *   **Action:** Rewrite the Summary to explicitly mention his **Computer Science\
-      \ background** and **MBA**, positioning him as the ideal bridge between technical\
-      \ AI teams and business stakeholders.\n*   **Key Phrase to Add:** \"Technical\
-      \ Product Manager with 9+ years of experience leveraging background in Software\
-      \ Engineering (Python, AWS) to deliver data-intensive B2B SaaS solutions.\"\n\
+      \ Summary Strategy\n**Goal:** Position John as a Technical Product Manager who\
+      \ bridges the gap between business strategy and technical engineering.\n*  \
+      \ **Action:** Rewrite the summary to lead with his unique combination of **MBA\
+      \ + BS Computer Science**.\n*   **Reframing:** Highlight his 9+ years of experience\
+      \ managing **\"complex B2B software lifecycles\"** and his hands-on technical\
+      \ background (**Python, AWS**) as the foundation for leading AI/ML product initiatives.\n\
       \n## 2. Experience Section Tailoring\n\n### Role: Senior Product Manager | Tech\
-      \ Innovations Inc.\n*   **Focus:** Demonstrate \"Scale\" and \"Technical Complexity.\"\
-      \n*   **Tailoring Actions:**\n    *   *Bullet 1:* \"Led cross-functional teams...\"\
-      \ -> \"Orchestrated cross-functional teams of engineers and data scientists\
-      \ to launch a **B2B SaaS platform**...\" (Injecting \"B2B SaaS\").\n    *  \
-      \ *New Bullet:* If truthful, explicitly mention using **analytics/data** to\
-      \ drive the \"30% engagement increase,\" aligning with the \"data-driven decisions\"\
-      \ requirement.\n    *   *Collaboration:* Emphasize working with **Engineering**\
-      \ to validate technical feasibility, proving he can handle the \"AI/ML engineers\"\
-      \ requirement.\n\n### Role: Software Developer | Creative Digital Agency\n*\
-      \   **Focus:** Validity of Technical Skills.\n*   **Tailoring Actions:**\n \
-      \   *   Do not shrink this section too much. It is the evidence for his **\"\
-      Deep understanding of AI/ML technologies\"** (via his coding roots). Ensure\
-      \ **Python** is bolded.\n\n## 3. Skills Section Optimization\n**Goal:** Beat\
-      \ the ATS and align with InnovateCorp's specific stack.\n*   **Add/Prioritize\
-      \ Keywords:**\n    *   **Natural Language Processing (NLP)** (Add to Technical\
-      \ Skills if familiar).\n    *   **Cloud Platforms:** Explicitly list **AWS**\
-      \ under Technical Skills.\n    *   **Methodologies:** Ensure **Agile**, **Scrum**,\
-      \ and **Product Lifecycle Management** are prominent.\n\n## 4. Gap Mitigation\n\
-      *   **The Gap:** \"Deep understanding of AI/ML.\"\n*   **The Fix:** Since John\
-      \ lists \"Machine Learning Fundamentals,\" he should add a **\"Projects\"**\
-      \ or **\"Certifications\"** section (if space allows) to highlight any specific\
-      \ ML coursework or side projects to substantiate this claim beyond just a keyword.\n"
+      \ Innovations Inc.\n*   **Focus:** Scale and Data-Driven Decision Making.\n\
+      *   **Tailoring Actions:**\n    *   *Bullet 1:* Reframe \"SaaS platform\" to\
+      \ **\"Data-driven SaaS platform\"** (if accurate to the product's nature, avoiding\
+      \ \"AI\" if not true). Focus on the *complexity* of the system.\n    *   *Bullet\
+      \ 4:* Highlight collaboration with **Engineering** to validate technical feasibility.\
+      \ Use this to prove he can handle the \"work closely with AI/ML engineers\"\
+      \ requirement by proxy.\n    *   *New Emphasis:* Explicitly mention utilizing\
+      \ **AWS** or cloud technologies if he managed them in this role, to hit the\
+      \ \"Cloud platforms\" requirement.\n\n### Role: Product Manager | Global Software\
+      \ Solutions\n*   **Focus:** Product Lifecycle & Requirements.\n*   **Tailoring\
+      \ Actions:**\n    *   Change \"detailed product specifications\" to **\"Product\
+      \ Requirements Documents (PRDs) and User Stories\"** to match the Job Description's\
+      \ exact terminology.\n    *   Emphasize the **\"B2B\"** nature of this role\
+      \ to align with InnovateCorp's B2B focus.\n\n### Role: Software Developer |\
+      \ Creative Digital Agency\n*   **Focus:** Technical Credibility.\n*   **Tailoring\
+      \ Actions:**\n    *   Ensure **Python** is bolded. This is his strongest proof\
+      \ point for technical aptitude.\n\n## 3. Skills Section Optimization\n**Goal:**\
+      \ Align taxonomy with the JD.\n*   **Re-order:** Move **\"Technical\"** skills\
+      \ higher or integrate them into a \"Core Competencies\" list.\n*   **Keywords\
+      \ to Prioritize:**\n    *   **Machine Learning Fundamentals** (Move to top of\
+      \ Technical list).\n    *   **AWS** (Ensure visibility).\n    *   **Agile/Scrum**.\n\
+      \    *   **Product Lifecycle Management**.\n    *   **Go-to-Market Strategy**.\n\
+      \n## 4. Gap Mitigation (Honest Approach)\n*   **The Gap:** \"Deep understanding\
+      \ of AI/ML concepts\" and \"NLP.\"\n*   **The Fix:** Do **NOT** invent NLP experience.\
+      \ Instead, lean heavily on his **\"Machine Learning Fundamentals\"** skill and\
+      \ **Computer Science degree**.\n*   **Recommendation:** If John has done any\
+      \ self-study or side projects in AI/NLP that aren't on the resume, he should\
+      \ add a **\"Projects\"** or **\"Professional Development\"** section to list\
+      \ them. This is the only compliant way to fill this gap."
   - name: raw_resume
     description: The candidate's original resume.
     source_file: illustrative-example/raw-resume.md

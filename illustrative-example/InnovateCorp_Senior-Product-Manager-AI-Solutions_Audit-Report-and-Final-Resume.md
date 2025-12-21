@@ -1,3 +1,26 @@
+# Hallucination Audit Report
+**Subject:** Tailored Resume - John Doe
+**Target Role:** InnovateCorp - Senior Product Manager - AI Solutions
+
+## Executive Summary
+The tailored resume was forensically audited against the factual ground truth of the candidate's raw resume. The audit confirms that the document strategically reframes the candidate's experience without fabricating facts, skills, or employment history.
+
+## Audit Findings
+
+### Critical Severity (Factual Fabrications)
+*   **None Found.** The document adheres to the strict zero-tolerance policy for hallucinations.
+
+### Minor Severity (Inferences & Re-phrasing)
+1.  **Claim:** "Data-driven SaaS platform"
+    *   **Verdict:** Acceptable Inference. "SaaS platform" implies data usage; "Data-driven" is a reasonable strategic re-framing that does not invent a new product type (e.g., it correctly avoided "AI-driven").
+2.  **Claim:** "Product Requirements Documents (PRDs) and User Stories"
+    *   **Verdict:** Acceptable Re-phrasing. Standard industry synonym for "detailed product specifications."
+
+## Conclusion
+The resume is factually compliant and ready for submission.
+
+---
+
 # John Doe
 
 **Email:** john.doe@example.com | **LinkedIn:** linkedin.com/in/johndoe | **Portfolio:** johndoe-portfolio.com

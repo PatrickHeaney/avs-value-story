@@ -1,20 +1,22 @@
 # ==============================================================================
-# Value Story Logic: VS-003 Audit & Refine
+# Value Story Logic: VS-003 Audit & Remediate
 #
-# This file contains the Goal and Instructions for the "Audit" Value Story (VS-003).
+# This file contains the Goal and Instructions for the "Audit & Remediate"
+# Value Story (VS-003).
 #
 # INPUT: Tailored Resume (VS-002 Output) + Raw Resume (Ground Truth)
-# OUTPUT: Hallucination Audit Report
+# OUTPUT: A Final, Fact-Checked, Remediated Resume
 # ==============================================================================
 
 # THE GOAL: The "Minimum Unique Information" needed to produce the product.
 # This defines the "North Star" for the Agent's internal reasoning loop.
 
 goal:
-  outcome_statement: "Conduct a forensic audit of the Tailored Resume to ensure zero fabrication of facts. Identify and report any claims that deviate from the factual ground truth of the Raw Resume."
+  outcome_statement: "Perform a forensic fact-check of the Tailored Resume against the Raw Resume. Identify all hallucinations and rewrite the resume to be 100% factually accurate while maintaining strategic alignment."
   success_metrics:
-    - "Audit Report identifies 100% of claims in the Tailored Resume that have no basis in the Raw Resume."
-    - "Report clearly distinguishes between 'Stylistic Re-phrasing' (Allowed) and 'Factual Fabrication' (Forbidden)."
+    - "Zero 'Critical' severity hallucinations remain in the final output."
+    - "All claims in the Remediated Resume are traceable to the Raw Resume."
+    - "The resume remains tailored (keywords/phrasing) but within the bounds of truth."
 
 # INSTRUCTIONS: Must be "Algorithmically Legible."
 # Precise enough for AI execution, clear enough for Human audit.
@@ -26,22 +28,25 @@ instructions:
       action: "Ingest the 'Tailored Resume' and extract every distinct claim (Employer, Title, Dates, Degree, Specific Metric/KPI, Skill)."
       validation_rule: "Agent has a structured list of claims to verify."
     - step: 2
-      action: "Cross-reference each extracted claim against the 'Raw Resume' (Ground Truth)."
-      validation_rule: "Every claim must have a direct source or logical inference path from the Raw Resume."
+      action: "Cross-reference each extracted claim against the 'Raw Resume' (Ground Truth). Flag any claim where the *substance* of the fact has changed (e.g., adding 'AI' to a project that didn't have it)."
+      validation_rule: "Strict zero-tolerance for unsupported additions."
     - step: 3
-      action: "Flag any claim where the *substance* of the fact has changed (e.g., 'Led a team of 5' -> 'Led a team of 50' is a hallucination; 'Led a team' -> 'Orchestrated a team' is a re-phrasing)."
-      validation_rule: "Strict zero-tolerance for number/date/title discrepancies."
+      action: "Generate a list of 'Hallucinations' (Critical Violations) and 'Inferences' (Minor Violations)."
+      validation_rule: "List is explicit and evidentiary."
     - step: 4
-      action: "Compile a 'Hallucination Audit Report'. List every flagged item with: (1) The Claim, (2) The Reality (Raw Resume), and (3) Severity (Critical/Minor)."
-      validation_rule: "Report is neutral, objective, and evidence-based."
+      action: "REMEDIATE: For every Critical Violation, rewrite the specific sentence/bullet point. Remove the invented fact and replace it with the strongest *truthful* alternative from the Raw Resume."
+      validation_rule: "If 'AI' was invented, revert to 'Complex Software' or 'Data-Driven' if supported."
+    - step: 5
+      action: "Output a single markdown document containing: (1) The 'Hallucination Audit Report' followed by a horizontal rule, and then (2) The final 'Remediated Resume'."
+      validation_rule: "Final document provides both transparency (the audit) and the product (the resume)."
 
   constraints:
-    - "Treat the Raw Resume as the absolute source of truth."
-    - "Do not accept 'implied' experience as fact without evidence."
-    - "Save the report to 'company_job-title_Hallucination-Audit-Report.md'."
+    - "You may strategically reframe and re-prioritize facts from the raw_resume."
+    - "You MUST NOT invent, embellish, or infer any new facts, skills, metrics, or experiences outside of this sources. This guardrail is absolute."
+    - "Save the document to 'company_job-title_Audit-Report-and-Final-Resume.md'."
 
 product:
-  type: "Report"
+  type: "Document"
   format: "Markdown"
   output_path: "illustrative-example"
 

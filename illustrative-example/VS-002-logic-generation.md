@@ -42,7 +42,7 @@ instructions:
       validation_rule: "Output contains ONLY the resume content, no conversational filler."
 
   constraints:
-    - "Do not invent new work history or degrees (hallucination check)."
+    - "You may strategically reframe and re-prioritize facts from the raw_resume You MUST NOT invent, embellish, or infer any new facts, skills, metrics, or experiences outside of this sources. This guardrail is absolute."
     - "Do not remove the 'Education' section."
     - "Save the generated resume to 'company_job-title_Tailored-Resume.md'."
 

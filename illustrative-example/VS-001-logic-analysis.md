@@ -39,7 +39,7 @@ instructions:
       action: "Develop a strategic plan for tailoring the resume, including prioritization of candidate's content, specific keywords to integrate, and sections to emphasize or de-emphasize."
       validation_rule: "Strategic plan is actionable, coherent, and directly addresses the gap analysis findings."
   constraints:
-    - "Do not hallucinate facts outside the provided Context."
+    - "You may strategically reframe and re-prioritize facts from the raw_resume You MUST NOT invent, embellish, or infer any new facts, skills, metrics, or experiences outside of this sources. This guardrail is absolute."
     - "Output must be formatted as a structured strategic plan."
     - "Save the generated strategic plan to 'company_job-title_description.md' derived from job description details."
 
@@ -47,7 +47,7 @@ product:
   type: "Document"
   format: "Markdown"
   handoff_target: "VS-002-resume-generation"
-  output_path: "illustrative-example"
+  output_path: "illustrative-example/"
 
 # CONTEXT MANIFEST: The "Bill of Materials" for this Value Story.
 # Defines what external files/data must be assembled by the script.
