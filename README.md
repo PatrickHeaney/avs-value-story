@@ -34,7 +34,23 @@ graph TD
         Business-Review --> Release
     end
 ```
-
+```mermaid
+graph TD
+    subgraph "VS-001: Analysis"
+        L1[Logic] --> A1[Automation]
+        C1[Context: JD + Resume] --> A1
+        A1 --> AI1[Agent]
+        AI1 --> P1[Product: Strategic Plan]
+    end
+    
+    subgraph "VS-002: Generation"
+        L2[Logic] --> A2[Automation]
+        C2[Context: Raw Resume] --> A2
+        P1 -.-> A2  <-- "Pulls P1 as Context"
+        A2 --> AI2[Agent]
+        AI2 --> P2[Product: Draft Resume]
+   end
+```
 ### The Strategic Shift
 
 Under the AVS Framework, the highest-value human contributions shift from "doing the work" to generating and improving the goals, instructions, and context used by Agentic-AI-Agents to produce the product.
@@ -72,30 +88,37 @@ To demonstrate the power of Agentic Value Streams, consider the task of generati
 ### 1. VS-001: Analysis & Strategy
 
 **Goal:** Understand the job description and the candidate's existing resume to identify key skills, experiences, and keywords for optimal matching.
+
 **Instructions:**
 *   Parse job description to extract required skills, keywords, and responsibilities.
 *   Parse candidate's raw resume to identify relevant experience, education, and achievements.
 *   Perform a gap analysis between job requirements and candidate profile.
 *   Develop a strategic plan for resume tailoring, including prioritization of content and keyword integration.
+
+
 **Context:** Job description (URL or text), Candidate's raw resume (PDF or text).
 
 ### 2. VS-002: Resume Generation
 
 **Goal:** Produce a draft resume tailored to the specific job application, following the strategic plan.
+
 **Instructions:**
 *   Select and prioritize relevant sections and bullet points from the candidate's raw resume based on the strategic plan.
 *   Rewrite/rephrase existing bullet points to incorporate job-specific keywords and align with the job description's language.
 *   Ensure resume adheres to best practices for formatting and readability.
+
 **Context:** Output from VS-001 (strategic plan), Candidate's raw resume, Resume formatting guidelines.
 
 ### 3. VS-003: Audit (Hallucination Detection)
 
 **Goal:** Conduct a forensic audit of the tailored resume to ensure zero fabrication of facts. Identify and report any claims that deviate from the factual ground truth of the raw resume.
+
 **Instructions:**
 *   Compare tailored resume against job description for keyword density and thematic alignment.
 *   Check for clarity, conciseness, and absence of generic language.
 *   Identify any remaining gaps or areas for improvement.
 *   Suggest specific revisions to optimize the resume further.
+
 **Context:** Tailored resume (draft), Original job description, Best practices for resume optimization.
 
 ### Value Stream Flow
@@ -107,8 +130,7 @@ graph TD
     subgraph "Agentic Value Stream (AVS)"
     A[User Request: Job + Candidate Resume] --> B(VS-001: Analysis & Strategy)
     B --> C(VS-002: Resume Generation)
-    C --> D(VS-003: Audit)
-    D --> E[DRAFT Tailored Resume]
+    C --> D(VS-003: Audit Report & Tailored Resume)
     end
 ```
 
@@ -137,38 +159,35 @@ graph TD
     end
 
     subgraph "VS-001: Analysis & Strategy"
-        direction LR
+        direction TB
         L1[Logic: VS-001-logic-analysis.md] --> A1[Automation: assemble_prompt.py]
         JD -- Context --> A1
         CR -- Context --> A1
         A1 --> P1(VS-001-assembled.yaml Prompt)
+        P1 --> AI1["AI Agent (Analyzes)"]
+        AI1 --> SP[Product: Strategic Plan]
     end
 
-    P1 --> AI1[AI Agent (Analyzes)]
-    AI1 --> SP[Strategic Plan Output]
-
     subgraph "VS-002: Resume Generation"
-        direction LR
+        direction TB
         L2[Logic: VS-002-logic-generation.md] --> A2[Automation: assemble_prompt.py]
-        SP -- Context --> A2
+        SP -. Context .-> A2
         CR -- Context --> A2
         JD -- Context --> A2
         A2 --> P2(VS-002-assembled.yaml Prompt)
+        P2 --> AI2["AI Agent (Generates)"]
+        AI2 --> TR[Product: Tailored Resume]
     end
 
-    P2 --> AI2[AI Agent (Generates)]
-    AI2 --> TR[Tailored Resume Output]
-
-    subgraph "VS-003: Audit"
-        direction LR
+    subgraph "VS-003: Audit & Remediate"
+        direction TB
         L3[Logic: VS-003-logic-audit.md] --> A3[Automation: assemble_prompt.py]
-        TR -- Context --> A3
+        TR -. Context .-> A3
         CR -- Context --> A3
         A3 --> P3(VS-003-assembled.yaml Prompt)
+        P3 --> AI3["AI Agent (Audits)"]
+        AI3 --> AR[Product: Audit Report & Final Resume]
     end
-
-    P3 --> AI3[AI Agent (Audits)]
-    AI3 --> AR[Audit Report Output]
 
     AR --> HumanReview[Human-Agent Review]
 ```
