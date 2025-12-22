@@ -18,7 +18,7 @@ The Agentic Value Stream (AVS) tracks the flow of agency and decision-making rat
 
 **Algorithmically Legible Instructions**: Precise enough for an AI-Agent to execute with zero "context blindness," yet semantically clear enough for Human-Agents to oversee and audit [cite: 2.2.2].
 
-**Context**: A mandatory component that shifts the burden of information retrieval from "runtime execution" to "design-time definition," effectively eliminating the "Information Hunt" [cite: 2.2.3].
+**Context-Manifest**: A mandatory component that shifts the burden of information retrieval from "runtime execution" to "design-time definition," effectively eliminating the "Information Hunt" [cite: 2.2.3].
 
 **Context Manifest**: lists every external file, data source, or API to be used as context by the agent to execute its task. Enables the Automation layer to dynamically assemble the correct context. 
 
@@ -29,7 +29,7 @@ graph TD
     subgraph "Value-Story"
         Goal --> Automation
         Instructions --> Automation
-        Context --> Automation
+        Context-Manifest --> Automation
         Automation --.YAML --> Agentic-Agent
         Agentic-Agent --> Product
         Business-Review <--> Product
@@ -40,15 +40,15 @@ graph TD
 graph TD
     subgraph "VS-001: Analysis"
         L1[Logic] --> A1[Automation]
-        C1[Context: JD + Resume] --> A1
+        C1[Context-Manifest: JD + Resume] --> A1
         A1 --> AI1[Agent]
         AI1 --> P1[Product: Strategic Plan]
     end
     
     subgraph "VS-002: Generation"
         L2[Logic] --> A2[Automation]
-        C2[Context: Raw Resume] --> A2
-        P1 -.-> A2  <-- "Pulls P1 as Context"
+        C2[Context-Manifest: Raw Resume] --> A2
+        P1 -.-> A2  <-- "Pulls P1 as Context-Manifest"
         A2 --> AI2[Agent]
         AI2 --> P2[Product: Draft Resume]
    end
@@ -79,7 +79,7 @@ Heaney, P. (2025). AVS Value Story: A Framework for Autonomous Orchestration. Gi
 
 Explore the Templates: Check the /templates folder for YAML schemas for creating your first Value Story.
 
-Integrate with MCP: This repository includes implementation guides for the Model Context Protocol (MCP) to provide mandatory context to your agents [cite: 7.1].
+Integrate with MCP: This repository includes implementation guides for the Model Context Protocol (MCP) to provide mandatory context-manifest to your agents [cite: 7.1].
 
 Contribute: Fork this repo to share your own "Algorithmically Legible" instructions for common industry value streams.
 
@@ -143,7 +143,7 @@ In the AVS framework, "Automation" isn't the AI thinking; it is the **assembly l
 To multiply human value, we don't just "ask the AI." We systematically assemble the prompt by combining:
 1.  **The Goal:** The specific outcome defined by the human architect.
 2.  **The Instructions:** The "Algorithmically Legible" logic for *how* to do the work.
-3.  **The Context:** The specific data (e.g., `job-description.md` and `raw-resume.md`) needed to prevent hallucination.
+3.  **The Context-Manifest:** The specific data (e.g., `job-description.md` and `raw-resume.md`) needed to prevent hallucination.
 
 This process generates a single, auditable package (the Value Story YAML) that serves as the **Context-Rich, Algorithmically Legible Prompt** for the Agent.
 
@@ -163,8 +163,8 @@ graph TD
     subgraph "VS-001: Analysis & Strategy"
         direction TB
         L1[Logic: VS-001-logic-analysis.md] --> A1[Automation: assemble_prompt.py]
-        JD -- Context --> A1
-        CR -- Context --> A1
+        JD -- Context-Manifest --> A1
+        CR -- Context-Manifest --> A1
         A1 --> P1(VS-001-assembled.yaml Prompt)
         P1 --> AI1["AI Agent (Analyzes)"]
         AI1 --> SP[Product: Strategic Plan]
@@ -173,9 +173,9 @@ graph TD
     subgraph "VS-002: Resume Generation"
         direction TB
         L2[Logic: VS-002-logic-generation.md] --> A2[Automation: assemble_prompt.py]
-        SP -. Context .-> A2
-        CR -- Context --> A2
-        JD -- Context --> A2
+        SP -. Context-Manifest .-> A2
+        CR -- Context-Manifest --> A2
+        JD -- Context-Manifest --> A2
         A2 --> P2(VS-002-assembled.yaml Prompt)
         P2 --> AI2["AI Agent (Generates)"]
         AI2 --> TR[Product: Tailored Resume]
@@ -184,8 +184,8 @@ graph TD
     subgraph "VS-003: Audit & Remediate"
         direction TB
         L3[Logic: VS-003-logic-audit.md] --> A3[Automation: assemble_prompt.py]
-        TR -. Context .-> A3
-        CR -- Context --> A3
+        TR -. Context-Manifest .-> A3
+        CR -- Context-Manifest --> A3
         A3 --> P3(VS-003-assembled.yaml Prompt)
         P3 --> AI3["AI Agent (Audits)"]
         AI3 --> AR[Product: Audit Report & Final Resume]
