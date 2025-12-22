@@ -2,78 +2,72 @@
 
 ## A Framework for Multiplying Human Value in the Era of Autonomous Orchestration.
 
-Developed by Patrick Heaney, this framework provides a rigorous methodological shift from "automating work" to multiplying value by externalizing tacit knowledge into Algorithmically Legible Instructions.
+Developed by **Patrick Heaney**, this framework provides a rigorous methodological shift from "automating work" to **multiplying value** by externalizing tacit knowledge into **Algorithmically Legible Instructions**.
 
 🚀 **The Problem: The Information Hunt**
 
-The current crisis in knowledge work is characterized by the "5–15 hour information hunt"—time lost every week by workers simply trying to gather the context needed to do their actual jobs [cite: 1.1, 2.1]. This "context blindness" is the primary reason AI deployments fail, lead to hallucinations, or require excessive human oversight [cite: 2.4, 6.2].
+The current crisis in knowledge work is characterized by the **"5–15 hour information hunt"**—time lost every week by workers simply trying to gather the context needed to do their actual jobs [cite: 1.1, 2.1]. This **"context blindness"** is the primary reason AI deployments fail, lead to hallucinations, or require excessive human oversight [cite: 2.4, 6.2].
 
 💡 **The Solution: Agentic Value Streams (AVS)**
 
-The Agentic Value Stream (AVS) tracks the flow of agency and decision-making rather than just static data [cite: 1.1]. It organizes the capabilities of Large Language Models (LLMs) into a linear, cumulative sequence of value creation centered around the Value Story [cite: 1.1].
+The Agentic Value Stream (AVS) tracks the flow of agency and decision-making rather than just static data [cite: 1.1]. It organizes the capabilities of Large Language Models (LLMs) into a **cascading, iterative, and cumulative sequence** of value creation centered around the Value Story [cite: 1.1].
 
 ### Core Definitions
 
-**Value Story**: The atomic unit of agentic work. It is a self-contained module comprising a Goal (Outcome), Instructions (Algorithm), and Context (Data) [cite: 2.1.3].
+**Value Story**: The atomic unit of agentic work. It is a self-contained module comprising a **Goal** (Outcome), **Instructions** (Algorithm), and **Context-Manifest** (Data) [cite: 2.1.3].
 
 **Algorithmically Legible Instructions**: Precise enough for an AI-Agent to execute with zero "context blindness," yet semantically clear enough for Human-Agents to oversee and audit [cite: 2.2.2].
 
 **Context-Manifest**: A mandatory component that shifts the burden of information retrieval from "runtime execution" to "design-time definition," effectively eliminating the "Information Hunt" [cite: 2.2.3].
 
-**Context Manifest**: lists every external file, data source, or API to be used as context by the agent to execute its task. Enables the Automation layer to dynamically assemble the correct context. 
-
 ## 🛠️ Framework Architecture
-
+This diagram illustrates the **Value Story** lifecycle: Plan (Human), Run (Agent), and Review (Human).
 ```mermaid
 graph TD
-    subgraph "Value-Story"
-        Goal --> Automation
-        Instructions --> Automation
-        Context-Manifest --> Automation
-        Automation --.YAML --> Agentic-Agent
-        Agentic-Agent --> Product
-        Business-Review <--> Product
-        Business-Review --> Release
+    subgraph legend
+        Plan(Plan = Design-Time)
+        Run(Run = Run-Time)
+        Review(Review = Human<br>In The Loop)
     end
-```
-```mermaid
-graph TD
-    subgraph "VS-001: Analysis"
-        L1[Logic] --> A1[Automation]
-        C1[Context-Manifest: JD + Resume] --> A1
-        A1 --> AI1[Agent]
-        AI1 --> P1[Product: Strategic Plan]
+    subgraph VS ["**Value-Story**"]
+        subgraph plan ["**Plan**"]
+            Start([Human-Agent]) ==> Goal
+            Goal --> Instructions --> Context-Manifest
+            Start ==> Instructions
+            Start ==> Context-Manifest
+        end
+        subgraph run ["**Run**"]
+            Goal ==> Automation
+            Instructions ==> Automation
+            Context-Manifest ==> Automation
+            Automation ==.YAML ==> Agentic-Agent
+            Agentic-Agent ==> Product
+        end
+        subgraph review ["**Review**"]
+            Business-Review{Human<br>Review}
+            Product ==> Business-Review
+            Business-Review -- Refine --> Goal
+            
+        end
+        Business-Review == Accept & Release ==> Context[(MCP,<br>Database,<br>File System,<br>URL, etc)]
+        Context[(MCP,<br>Database,<br>File System,<br>URL, etc)] <==> Automation
     end
     
-    subgraph "VS-002: Generation"
-        L2[Logic] --> A2[Automation]
-        C2[Context-Manifest: Raw Resume] --> A2
-        P1 -.-> A2  <-- "Pulls P1 as Context-Manifest"
-        A2 --> AI2[Agent]
-        AI2 --> P2[Product: Draft Resume]
-   end
+    %% Syles
+    classDef Legend fill:#ffffff,stroke:#333,stroke-width:2px,font-size:20px;
+    classDef Plan fill:#ffb6c1,stroke:#333,stroke-width:2px,font-size:12px;
+    classDef Run fill:#90ee90,stroke:#333,stroke-width:2px,font-size:12px;
+    classDef Review fill:#add8e6,stroke:#333,stroke-width:2px,font-size:12px;
+
+    %% Assignments
+    class legend,VS Legend;
+    class run,Run, Run;
+    class plan,Plan, Plan;
+    class review,Review Review;
 ```
 ### The Strategic Shift
 
-Under the AVS Framework, the highest-value human contributions shift from "doing the work" to generating and improving the goals, instructions, and context used by Agentic-AI-Agents to produce the product.
-
-## 🏅 About the Author
-
-Patrick Heaney brings over 20 years of experience in high-stakes program management and the intelligence community [cite: user_context].
-
-Recipient of two "US Army Top 10 Inventions" awards for systems that drastically reduced friction and saved lives in combat environments [cite: user_context].
-
-Architect of the AVS Framework, designed to solve the structural "context gap" in modern enterprise AI [cite: 1.1, 6.2].
-
-## 📄 License & Attribution
-
-This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).
-
-### How to Cite
-
-If you utilize this framework, templates, or logic in a professional, academic, or commercial context, please provide attribution as follows:
-
-Heaney, P. (2025). AVS Value Story: A Framework for Autonomous Orchestration. GitHub: PatrickHeaney/avs-value-story.
+Under the **AVS Framework**, the highest-value human contributions completes the shift from "doing the work" to generating and improving the goals, instructions, and context used by Agentic-AI-Agents to produce the product. This moves the human architect from the role of a "task-manager" to a **"Orchestrator of Agency"** and moves the Agentic AI Agent from a "task-doer" to a **"force multiplier."**
 
 ## 🤝 Getting Started
 
@@ -225,3 +219,21 @@ uv run illustrative-example/assemble_prompt.py --logic illustrative-example/VS-0
 # Manually 'run' VS-003-assembled.yaml as a prompt to get the Audit Report.
 # The output (Audit Report) should be saved to: illustrative-example/InnovateCorp_Senior-Product-Manager-AI-Solutions_Hallucination-Audit-Report.md
 ```
+## 🏅 About the Author
+
+Patrick Heaney brings over 20 years of experience in high-stakes program management and the intelligence community [cite: user_context].
+
+Recipient of two "US Army Top 10 Inventions" awards for systems that drastically reduced friction and saved lives in combat environments [cite: user_context].
+
+Architect of the AVS Framework, designed to solve the structural "context gap" in modern enterprise AI [cite: 1.1, 6.2].
+
+## 📄 License & Attribution
+
+This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).
+
+### How to Cite
+
+If you utilize this framework, templates, or logic in a professional, academic, or commercial context, please provide attribution as follows:
+
+Heaney, P. (2025). AVS Value Story: A Framework for Autonomous Orchestration. GitHub: PatrickHeaney/avs-value-story.
+
