@@ -12,7 +12,28 @@ The current crisis in knowledge work is characterized by the **"5–15 hour info
 
 The Agentic Value Stream (AVS) tracks the flow of agency and decision-making rather than just static data [cite: 1.1]. It organizes the capabilities of Large Language Models (LLMs) into a **cascading, iterative, and cumulative sequence** of value creation centered around the Value Story [cite: 1.1].
 
-### Core Definitions
+```mermaid
+graph LR
+    subgraph Process [The AVS Pattern]
+        direction TB
+        VS-001(Value Story 1)
+        VS-002(Value Story 1)
+        VS-003(Value Story 1)
+        
+        %% Vertical flow connections
+        VS-001 ==> VS-002 ==> VS-003 
+    end
+
+    Context[(MCP,<br>Database,<br>File System,<br>URL, etc)]
+
+    %% Connections to the right
+    VS-001 <-.-> Context
+    VS-002 <-.-> Context
+    VS-003 <-.-> Context
+    VS-003 ==> Context
+```
+
+## Core Definitions
 
 **Value Story**: The atomic unit of agentic work. It is a self-contained module comprising a **Goal** (Outcome), **Instructions** (Algorithm), and **Context-Manifest** (Data) [cite: 2.1.3].
 
@@ -20,30 +41,25 @@ The Agentic Value Stream (AVS) tracks the flow of agency and decision-making rat
 
 **Context-Manifest**: A mandatory component that shifts the burden of information retrieval from "runtime execution" to "design-time definition," effectively eliminating the "Information Hunt" [cite: 2.2.3].
 
-## 🛠️ Framework Architecture
+# 🛠️ The Value Story 
 This diagram illustrates the **Value Story** lifecycle: Plan (Human), Run (Agent), and Review (Human).
 ```mermaid
 graph TD
-    subgraph legend
-        Plan(Plan = Design-Time)
-        Run(Run = Run-Time)
-        Review(Review = Human<br>In The Loop)
-    end
-    subgraph VS ["**Value-Story**"]
-        subgraph plan ["**Plan**"]
+    subgraph VS [" "]
+        subgraph plan ["<span style='font-size:20px'>**1-Plan**</span>"]
             Start([Human-Agent]) ==> Goal
             Goal --> Instructions --> Context-Manifest
             Start ==> Instructions
             Start ==> Context-Manifest
         end
-        subgraph run ["**Run**"]
+        subgraph run  ["<span style='font-size:20px'>**2-Run**</span>"]
             Goal ==> Automation
             Instructions ==> Automation
             Context-Manifest ==> Automation
-            Automation ==.YAML ==> Agentic-Agent
-            Agentic-Agent ==> Product
+            Automation == **.YAML** ==> AI-Agent
         end
-        subgraph review ["**Review**"]
+        subgraph review ["<span style='font-size:20px'>**3-Review**</span>"]
+            AI-Agent ==> Product
             Business-Review{Human<br>Review}
             Product ==> Business-Review
             Business-Review -- **Refine** --> Goal
@@ -54,11 +70,10 @@ graph TD
     end
     
     %% Syles
-    classDef Legend fill:#ffffff,stroke:#333,stroke-width:2px,font-size:20px;
-    classDef Plan fill:#ffb6c1,stroke:#333,stroke-width:2px,font-size:12px;
-    classDef Run fill:#90ee90,stroke:#333,stroke-width:2px,font-size:12px;
-    classDef Review fill:#add8e6,stroke:#333,stroke-width:2px,font-size:12px;
-
+    classDef Plan fill:#ffb6c1,stroke:#333,stroke-width:2px;
+    classDef Run fill:#90ee90,stroke:#333,stroke-width:2px;
+    classDef Review fill:#add8e6,stroke:#333,stroke-width:2px;
+    
     %% Assignments
     class legend,VS Legend;
     class run,Run, Run;
@@ -67,7 +82,7 @@ graph TD
 ```
 ## The Strategic Shift
 
-Under the **AVS Framework**, the highest-value human contributions completes the shift from "doing the work" to generating and improving the goals, instructions, and context used by Agentic-AI-Agents to produce the product. This moves the human architect from the role of a "task-manager" to a **"Orchestrator of Agency"** and moves the Agentic AI Agent from a "task-doer" to a **"force multiplier."**
+Under the **AVS Framework**, the highest-value human contributions complete the shift from "doing the work" to generating and improving the goals, instructions, and context used by Agentic-AI-Agents to produce the product. This moves the human architect from the role of a "task-manager" to a **"Orchestrator of Agency"** and moves the Agentic AI Agent from a "task-doer" to a **"force multiplier."**
 
 ## 🤝 Getting Started
 
@@ -112,28 +127,11 @@ To demonstrate the power of Agentic Value Streams, consider the task of generati
 - **Context-Manifest:** Tailored resume (draft), Original job description, Best practices for resume optimization.
 - **Product:**  Audit Report & Finalized Resume.
 
-### Value Stream Flow
-
-The sequence of these Value Stories forms a clear, auditable Agentic Value Stream:
-
-```mermaid
-graph TD
-    subgraph "Agentic Value Stream (AVS)"
-        A(VS-001: Analysis & Strategy)
-        A --> B(VS-002: Resume Generation)
-        B --> C(VS-003: Audit Report & Tailored Resume)
-
-    end
-A -- Strategy --> Context[(MCP,<br>Database,<br>File System,<br>URL, etc)]
-B -- Draft-Resume --> Context
-C -- (Audit Report & Finalized Resume) --> Context
-```
-
 ### The Automation Step: Assembling the AI Prompt
 
-In the AVS framework, "Automation" isn't the AI thinking; it is the **assembly line** that builds the perfect prompt.
+Within each Value Story in the AVS framework, "Automation" isn't the AI thinking; it is the **assembly line** that builds the perfect prompt.
 
-To multiply human value, we don't just "ask the AI." We systematically assemble the prompt by combining:
+To multiply human value, we don't just "ask the AI." We automate assembling the prompt by combining:
 1.  **The Goal:** The specific outcome defined by the human architect.
 2.  **The Instructions:** The "Algorithmically Legible" logic for *how* to do the work.
 3.  **The Context-Manifest:** The specific data (e.g., `job-description.md` and `raw-resume.md`) needed to prevent hallucination.
@@ -142,82 +140,95 @@ This process generates a single, auditable package (the Value Story YAML) that s
 
 *👉 Check the `/illustrative-example` folder to see the input files and the resulting assembled YAML.*
 
-### Updated Value Stream Flow
+### Orchestration Sequence
 
-The full end-to-end pipeline for the tailored resume generation demonstrates the complete AVS framework:
+This sequence diagram illustrates the temporal hand-off between the Human Architect, the Automation script (using uv), and the AI Agent for each story in the stream.
 
 ```mermaid
-graph TD
-    subgraph "Human-Agent Input"
-        JD[Job Description]
-        CR[Candidate Raw Resume]
-    end
-
-    subgraph "VS-001: Analysis & Strategy"
-        direction TB
-        L1[Logic: VS-001-logic-analysis.md] --> A1[Automation: assemble_prompt.py]
-        JD -- Context-Manifest --> A1
-        CR -- Context-Manifest --> A1
-        A1 --> P1(VS-001-assembled.yaml Prompt)
-        P1 --> AI1["AI Agent (Analyzes)"]
-        AI1 --> SP[Product: Strategic Plan]
-    end
-
-    subgraph "VS-002: Resume Generation"
-        direction TB
-        L2[Logic: VS-002-logic-generation.md] --> A2[Automation: assemble_prompt.py]
-        SP -. Context-Manifest .-> A2
-        CR -- Context-Manifest --> A2
-        JD -- Context-Manifest --> A2
-        A2 --> P2(VS-002-assembled.yaml Prompt)
-        P2 --> AI2["AI Agent (Generates)"]
-        AI2 --> TR[Product: Tailored Resume]
-    end
-
-    subgraph "VS-003: Audit & Remediate"
-        direction TB
-        L3[Logic: VS-003-logic-audit.md] --> A3[Automation: assemble_prompt.py]
-        TR -. Context-Manifest .-> A3
-        CR -- Context-Manifest --> A3
-        A3 --> P3(VS-003-assembled.yaml Prompt)
-        P3 --> AI3["AI Agent (Audits)"]
-        AI3 --> AR[Product: Audit Report & Final Resume]
-    end
-
-    AR --> HumanReview[Human-Agent Review]
+sequenceDiagram
+    participant H as Human Architect
+    participant A as Automation (uv run)
+    participant C as Context Store (JD/Resume)
+    participant AG as Agentic Agent
+    
+    Note over H, C: Planning Phase
+    H->>H: Write Value Story (Goal, Instructions, and Context-Manifest (.md))
+    H->>A: Provide Value Story (.md)
+    A->>C: Request Context
+    C-->>A: Provide Context
+    A->>A: Assemble Package (.YAML)
+    
+    Note over A, AG: Execution Phase
+    A->>AG: Provide Algorithmically Legible Prompt
+    AG->>AG: Execute Goal
+    AG->>H: Output Product
+    
+    Note over H, C: Review Phase
+    alt Choice: Refine Logic
+        H->>H: Refine Value Story
+    else Choice: Accept & Release
+        H->>C: Accept & Release (Update Context)
+end
 ```
 
-### The Assembly Process
+# Getting Started
 
-The core of AVS is the "Automation" step, where human-defined logic and context are assembled into an AI-ready prompt. For this example, the `illustrative-example/assemble_prompt.py` script orchestrates this. It reads a Value Story's logic (`VS-XXX-logic-XXX.md`)—which now includes a `context_manifest`—and dynamically embeds the specified input files into a comprehensive `VS-XXX-assembled.yaml` prompt.
+This repository uses uv for lightning-fast project and dependency management.
 
-### Running the Example
+## 1. Install and Setup
+```
+git clone [https://github.com/PatrickHeaney/avs-value-story.git](https://github.com/PatrickHeaney/avs-value-story.git)
+cd avs-value-story
+```
+ ## 2. Run the Example
+The `assemble_prompt.py` script acts as the Automation layer, combining your human logic and context files into a single, context-rich YAML prompt.
 
-To fully experience this end-to-end Value Stream, navigate to the project root and execute the assembly script for each Value Story. The script will generate the `VS-XXX-assembled.yaml` prompt, which you would then provide to your chosen AI Agent. The AI's output from one step often becomes the input (context) for the next.
+### **Step 1. Assemble VS-001 (Analysis & Strategy)**
+**Plan:** Review and update the input files (`job_description.md`, `raw-resume.md`) and the logic definition (`VS-001-logic-analysis.md`) to ensure the goals and constraints are accurate.
 
-**1. Assemble VS-001 (Analysis & Strategy)**
-This step combines the job description and raw resume into a prompt for the AI to generate a strategic plan.
+**Run:**
+- **Assemble:**
 ```bash
-uv run illustrative-example/assemble_prompt.py --logic illustrative-example/VS-001-logic-analysis.md --output VS-001-assembled.yaml
-# Manually 'run' VS-001-assembled.yaml as a prompt to get the Strategic Plan.
-# The output (Strategic Plan) should be saved to: illustrative-example/InnovateCorp_Senior-Product-Manager-AI-Solutions_Strategic-Plan.md
+    uv run illustrative-example/assemble_prompt.py 
+    --logic illustrative-example/VS-001-logic-analysis.md 
+    --output VS-001-assembled.yaml
 ```
+- **Execute:**
+    - **Web UI (Claude.ai / ChatGPT):** Open `VS-001-assembled.yaml`, copy the entire text, and paste it into the chat.
+    - **Agentic IDE (Cursor / Windsurf / Claude Dev):** Open the file and ask the agent: "`Execute the goal in this Value Story and save the result to strategy_report.md`"
 
-**2. Assemble VS-002 (Resume Generation)**
-This step combines the strategic plan, raw resume, and job description into a prompt for the AI to generate a tailored resume.
-```bash
-uv run illustrative-example/assemble_prompt.py --logic illustrative-example/VS-002-logic-generation.md --output VS-002-assembled.yaml
-# Manually 'run' VS-002-assembled.yaml as a prompt to get the Tailored Resume.
-# The output (Tailored Resume) should be saved to: illustrative-example/InnovateCorp_Senior-Product-Manager-AI-Solutions_Tailored-Resume.md
-```
+**Review:** Audit the Strategic Plan. Once satisfied, save it as `strategy_report.md` in the `illustrative-example/` folder to feed the next story.
 
-**3. Assemble VS-003 (Audit)**
-This step combines the tailored resume and the raw resume into a prompt for the AI to audit for factual consistency and generate a report.
+### **Step 2: Generate the Tailored Resume (VS-002)**
+
+**Plan:** Review the `strategy_report.md` (Product of VS-001) and ensure the `VS-002-logic-generation.md` instructions correctly prioritize the identified strategy.
+
+**Run:**
+- **Assemble:**
 ```bash
-uv run illustrative-example/assemble_prompt.py --logic illustrative-example/VS-003-logic-audit.md --output VS-003-assembled.yaml
-# Manually 'run' VS-003-assembled.yaml as a prompt to get the Audit Report.
-# The output (Audit Report) should be saved to: illustrative-example/InnovateCorp_Senior-Product-Manager-AI-Solutions_Hallucination-Audit-Report.md
+    uv run illustrative-example/assemble_prompt.py \
+    --logic illustrative-example/VS-002-logic-generation.md \
+    --output VS-002-assembled.yaml
 ```
+- **Execute:** Provide the text of VS-002-assembled.yaml to your AI for execution.
+
+**Review:** Validate the Tailored Resume Draft. Save the result as `tailored_resume_draft.md`.
+
+### **Step 3: Conduct the Hallucination Audit (VS-003)**
+
+**Plan:** Review the `tailored_resume_draft.md` and the `VS-003-logic-audit.md` definition to ensure the forensic "Red-Teaming" criteria are exhaustive.
+
+**Run:** 
+- **Assemble:**
+```bash
+    uv run illustrative-example/assemble_prompt.py \
+    --logic illustrative-example/VS-003-logic-audit.md \
+    --output VS-003-assembled.yaml
+```
+- **Execute:** Provide the text of `VS-003-assembled.yaml` to your AI.
+
+**Review:** Either `Refine` the input files of step 1 and repeat the Value Stream or `Accept` the Final Audit Report & Verified Resume to complete the AVS.
+
 ## 🏅 About the Author
 
 Patrick Heaney brings over 20 years of experience in high-stakes program management and the intelligence community [cite: user_context].
