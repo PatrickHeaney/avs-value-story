@@ -22,38 +22,14 @@ This document outlines the steps to create a new Value Story within the AVS fram
 - **Automation Script:** Use `assemble_prompt.py` to combine the goal, instructions, and context-manifest into a single YAML file.
 - **Execution:** Provide this YAML file as input to your AI agent.
 
-## Example
+# Example
 
 ### Goal
-Generate a tailored resume for a specific job application.
+Create a markdown file for Gitbut to demon the thought process for creating a Value Story.
 
 ### Instructions
-1. Parse the job description to extract required skills, keywords, and responsibilities.
-2. Parse the candidate's raw resume to identify relevant experience, education, and achievements.
-3. Perform a gap analysis between job requirements and candidate profile.
-4. Develop a strategic plan for resume tailoring, including prioritization of content and keyword integration.
+1. Draft goal (see above), instructions (here), and Context-Manfiest (below).
+2. Create `assembly.py` python script to combine the goal, instructions and content identified in the Context-Manifest section into a YAML file (see `illustrative-example/assemble_prompt.py` for an example of the desire YAML structure.)
+3. Run the newly created py script and save the output as create-vs.yaml
+4. Read the new create-vs.yaml and treat is as if it were an input prompt.
 
-### Context-Manifest
-- Job description (URL or text)
-- Candidate's raw resume (PDF or text)
-
-### YAML Output
-```yaml
-goal: Generate a tailored resume for a specific job application
-instructions:
-  - Parse the job description to extract required skills, keywords, and responsibilities.
-  - Parse the candidate's raw resume to identify relevant experience, education, and achievements.
-  - Perform a gap analysis between job requirements and candidate profile.
-  - Develop a strategic plan for resume tailoring, including prioritization of content and keyword integration.
-context-manifest:
-  - job-description.md
-  - raw-resume.md
-```
-
-### Execution
-Provide the YAML file to your AI agent to generate the tailored resume.
-
-## Review
-
-- **Human Oversight:** Ensure the output meets the desired outcome and is free from errors or hallucinations.
-- **Refinement:** If necessary, refine the instructions or context-manifest and repeat the process.
