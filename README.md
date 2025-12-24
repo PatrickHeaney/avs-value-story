@@ -37,6 +37,14 @@ graph LR
 
 **Value Story**: The atomic unit of agentic work. It is a self-contained module comprising a **Goal** (Outcome), **Instructions** (Algorithm), and **Context-Manifest** (Data) [cite: 2.1.3].
 
+Every Value Story in this repository follows the **Agile v1.2 Standard**, ensuring that every unit of work is aligned with a specific persona and business outcome:
+
+* **As a [Persona]**: Defines the perspective and voice of the agent.
+
+* **I want [Action]**: Defines the specific technical deliverable and success metrics.
+
+* **So that [Value]**: Provides the "Why," allowing the agent to resolve ambiguities through the lens of intended value.
+
 **Algorithmically Legible Instructions**: Precise enough for an AI-Agent to execute with zero "context blindness," yet semantically clear enough for Human-Agents to oversee and audit [cite: 2.2.2].
 
 **Context-Manifest**: A mandatory component that shifts the burden of information retrieval from "runtime execution" to "design-time definition," effectively eliminating the "Information Hunt" [cite: 2.2.3].
@@ -86,7 +94,8 @@ graph TD
 ```
 ## 🤝 Getting Started
 
-Explore the Templates: Check the /templates folder for YAML schemas for creating your first Value Story.
+This project uses `uv` for ultra-fast, reproducible Python environment management.
+
 
 Integrate with MCP: This repository includes implementation guides for the Model Context Protocol (MCP) to provide mandatory context-manifest to your agents [cite: 7.1].
 
@@ -173,62 +182,71 @@ end
 
 # Getting Started
 
-This repository uses uv for lightning-fast project and dependency management.
+## 1. Prerequisites
 
-## 1. Install and Setup
+Ensure you have `uv` installed on your system:
+Explore the Templates: Check the /templates folder for YAML schemas for creating your first Value Story.
+```
+curl -LsSf [https://astral.sh/uv/install.sh](https://astral.sh/uv/install.sh) | sh
+```
+## 2. Installation
+
+Clone the repository and sync the environment:
 ```
 git clone [https://github.com/PatrickHeaney/avs-value-story.git](https://github.com/PatrickHeaney/avs-value-story.git)
 cd avs-value-story
+uv sync
 ```
- ## 2. Run the Example
-The `assemble_prompt.py` script acts as the Automation layer, combining your human logic and context files into a single, context-rich YAML prompt.
+## 3. Your First Governance Pass
 
-### **Step 1. Assemble VS-001 (Analysis & Strategy)**
-**Plan:** Review and update the input files (`job_description.md`, `raw-resume.md`) and the logic definition (`VS-001-logic-analysis.md`) to ensure the goals and constraints are accurate.
-
-**Run:**
-- **Assemble:**
-```bash
-    uv run illustrative-example/assemble_prompt.py 
-    --logic illustrative-example/VS-001-logic-analysis.md 
-    --output VS-001-assembled.yaml
+Validate the provided template to ensure your environment is configured correctly:
 ```
-- **Execute:**
-    - **Web UI (Claude.ai / ChatGPT):** Open `VS-001-assembled.yaml`, copy the entire text, and paste it into the chat.
-    - **Agentic IDE (Cursor / Windsurf / Claude Dev):** Open the file and ask the agent: "`Execute the goal in this Value Story and save the result to strategy_report.md`"
-
-**Review:** Audit the Strategic Plan. Once satisfied, save it as `strategy_report.md` in the `illustrative-example/` folder to feed the next story.
-
-### **Step 2: Generate the Tailored Resume (VS-002)**
-
-**Plan:** Review the `strategy_report.md` (Product of VS-001) and ensure the `VS-002-logic-generation.md` instructions correctly prioritize the identified strategy.
-
-**Run:**
-- **Assemble:**
-```bash
-    uv run illustrative-example/assemble_prompt.py \
-    --logic illustrative-example/VS-002-logic-generation.md \
-    --output VS-002-assembled.yaml
+uv run avs validate vs-000-template.yaml
 ```
-- **Execute:** Provide the text of VS-002-assembled.yaml to your AI for execution.
+## 🛠 The Toolkit CLI
 
-**Review:** Validate the Tailored Resume Draft. Save the result as `tailored_resume_draft.md`.
+The `avs` toolkit provides a suite of commands to move from architectural intent to execution.
 
-### **Step 3: Conduct the Hallucination Audit (VS-003)**
+### `validate`
 
-**Plan:** Review the `tailored_resume_draft.md` and the `VS-003-logic-audit.md` definition to ensure the forensic "Red-Teaming" criteria are exhaustive.
-
-**Run:** 
-- **Assemble:**
-```bash
-    uv run illustrative-example/assemble_prompt.py \
-    --logic illustrative-example/VS-003-logic-audit.md \
-    --output VS-003-assembled.yaml
+Checks a Value Story against the "Building Code" (Pydantic models). It ensures your goal is properly framed and your instructions meet the minimum precision requirements.
 ```
-- **Execute:** Provide the text of `VS-003-assembled.yaml` to your AI.
+uv run avs validate illustrative-example/VS-001-logic-analysis.md
+```
 
-**Review:** Either `Refine` the input files of step 1 and repeat the Value Stream or `Accept` the Final Audit Report & Verified Resume to complete the AVS.
+### `assemble`
 
+The "Information Hunt" automation. It reads your `context_manifest`, fetches the raw text from your local files, and packages everything into a **Briefcase** (`*-assembled.yaml`) stamped with a unique `assembled_at` timestamp.
+```
+uv run avs assemble illustrative-example/VS-001-logic-analysis.md
+```
+
+### `run`
+
+Executes the Value Story. If the file has not been assembled yet, `run` will automatically perform the assembly step before dispatching the payload to your local LLM (defaulting to Ollama/Llama3).
+```
+uv run avs run illustrative-example/VS-001-logic-analysis.md --local
+```
+
+## 📂 Architecture: Blueprint vs. Briefcase
+
+To maintain a clean and auditable repository, AVS distinguishes between two file states:
+
+1. **The Blueprint (`VS-XXX.md`)**: The human-readable source of truth. It contains your logic and references to data, but not the data itself. This is what you commit to Git.
+
+2. **The Briefcase (`VS-XXX-assembled.yaml`)**: An execution snapshot containing the logic **plus** the full content of all context files.
+
+> **Tip:** We recommend adding `*-assembled.yaml` to your `.gitignore` to prevent repository bloat and accidental exposure of sensitive context data.
+
+## 🏗 Repository Structure
+
+* `src/avs_toolkit/`: The core engine (Models, Parser, CLI).
+
+* `illustrative-example/`: A complete end-to-end Value Stream (Resume Tailoring).
+
+* `vs-000-template.yaml`: The master blueprint for creating new stories.
+
+* `Visual-Studio-Code-Setup-Guide.md`: Recommended extensions for an optimal AVS dev environment.
 ## 🏅 About the Author
 
 Patrick Heaney brings over 20 years of experience in high-stakes program management and the intelligence community [cite: user_context].

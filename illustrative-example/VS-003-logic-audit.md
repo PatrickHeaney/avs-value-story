@@ -1,26 +1,31 @@
-# ==============================================================================
-# Value Story Logic: VS-003 Audit & Remediate
-#
-# This file contains the Goal and Instructions for the "Audit & Remediate"
-# Value Story (VS-003).
-#
-# INPUT: Tailored Resume (VS-002 Output) + Raw Resume (Ground Truth)
-# OUTPUT: A Final, Fact-Checked, Remediated Resume
-# ==============================================================================
+# VS-003: Audit & Remediate
+```
+ARCHITECT'S GUIDE: VS-003
+This story acts as the "Forensic Gatekeeper." It performs a strict
+cross-reference between the tailored draft and the ground-truth resume
+to eliminate hallucinations while maintaining strategic alignment.
+```
+metadata:
+  story_id: "VS-003"
+  version: "1.2"
+  author: "Patrick Heaney"
+  status: "active"
+  # assembled_at: null  # Populated by 'avs assemble'
 
-# THE GOAL: The "Minimum Unique Information" needed to produce the product.
-# This defines the "North Star" for the Agent's internal reasoning loop.
-
+# THE GOAL: The "North Star" for the Agentic-Agent.
 goal:
-  outcome_statement: "Perform a forensic fact-check of the Tailored Resume against the Raw Resume. Identify all hallucinations and rewrite the resume to be 100% factually accurate while maintaining strategic alignment."
-  success_metrics:
-    - "Zero 'Critical' severity hallucinations remain in the final output."
-    - "All claims in the Remediated Resume are traceable to the Raw Resume."
-    - "The resume remains tailored (keywords/phrasing) but within the bounds of truth."
+  as_a: "As a Forensic Document Auditor"
+  i_want: >
+    Perform a forensic fact-check of the Tailored Resume against the Raw Resume.
+    - Requirement 1: Identify all hallucinations (claims unsupported by the raw resume).
+    - Requirement 2: Rewrite the resume to be 100% factually accurate while maintaining strategic alignment.
+    - Requirement 3: Ensure zero 'Critical' severity hallucinations remain in the final output.
+  so_that: >
+    The final resume is a high-integrity document that preserves the strategic 
+    tailoring of VS-002 without compromising factual truth, protecting the 
+    candidate from background check failures.
 
 # INSTRUCTIONS: Must be "Algorithmically Legible."
-# Precise enough for AI execution, clear enough for Human audit.
-
 instructions:
   reasoning_pattern: "Reflection"
   execution_steps:
@@ -28,38 +33,33 @@ instructions:
       action: "Ingest the 'Tailored Resume' and extract every distinct claim (Employer, Title, Dates, Degree, Specific Metric/KPI, Skill)."
       validation_rule: "Agent has a structured list of claims to verify."
     - step: 2
-      action: "Cross-reference each extracted claim against the 'Raw Resume' (Ground Truth). Flag any claim where the *substance* of the fact has changed (e.g., adding 'AI' to a project that didn't have it)."
-      validation_rule: "Strict zero-tolerance for unsupported additions."
+      action: "Cross-reference each extracted claim against the 'Raw Resume' (Ground Truth). Flag any claim where the substance of the fact has changed."
+      validation_rule: "Strict zero-tolerance policy for unsupported additions."
     - step: 3
-      action: "Generate a list of 'Hallucinations' (Critical Violations) and 'Inferences' (Minor Violations)."
-      validation_rule: "List is explicit and evidentiary."
+      action: "Generate an Audit Report categorizing issues as 'Hallucinations' (Critical) or 'Inferences' (Minor)."
+      validation_rule: "List is explicit, evidentiary, and identifies the specific offending text."
     - step: 4
-      action: "REMEDIATE: For every Critical Violation, rewrite the specific sentence/bullet point. Remove the invented fact and replace it with the strongest *truthful* alternative from the Raw Resume."
-      validation_rule: "If 'AI' was invented, revert to 'Complex Software' or 'Data-Driven' if supported."
+      action: "REMEDIATE: Rewrite the specific bullet points to remove invented facts and replace them with the strongest truthful alternatives."
+      validation_rule: "Strategic keywords are maintained only if they describe a truth supported by the source."
     - step: 5
-      action: "Output a single markdown document containing: (1) The 'Hallucination Audit Report' followed by a horizontal rule, and then (2) The final 'Remediated Resume'."
-      validation_rule: "Final document provides both transparency (the audit) and the product (the resume)."
-
+      action: "Output a single document containing the 'Hallucination Audit Report' followed by the final 'Remediated Resume'."
+      validation_rule: "Final document provides both the audit transparency and the finished product."
   constraints:
-    - "You may strategically reframe and re-prioritize facts from the raw_resume."
-    - "You MUST NOT invent, embellish, or infer any new facts, skills, metrics, or experiences outside of this sources. This guardrail is absolute."
+    - "You may strategically reframe and re-prioritize facts but MUST NOT invent new ones."
     - "Save the document to 'company_job-title_Audit-Report-and-Final-Resume.md'."
 
-product:
-  type: "Document"
-  format: "Markdown"
-  output_path: "illustrative-example"
-
 # CONTEXT MANIFEST: The "Bill of Materials" for this Value Story.
-# Defines what external files/data must be assembled by the script.
-
 context_manifest:
   - key: "tailored_resume"
     description: "The draft tailored resume generated by VS-002."
-    required: true
     default_path: "illustrative-example/InnovateCorp_Senior-Product-Manager-AI-Solutions_Tailored-Resume.md"
-
+    # content: null  # Populated by 'avs assemble'
   - key: "raw_resume"
     description: "The original, unedited candidate resume (Ground Truth)."
-    required: true
     default_path: "illustrative-example/raw-resume.md"
+
+# PRODUCT: The expected deliverable.
+product:
+  type: "Document"
+  format: "Markdown"
+  output_path: "illustrative-example/"

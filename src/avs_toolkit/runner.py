@@ -1,24 +1,100 @@
+import yaml
 import httpx
+import json
+from pathlib import Path
 from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, TextColumn
+from rich.live import Live
+from rich.markdown import Markdown
+from rich.spinner import Spinner
 
 console = Console()
 
-async def run_ollama_story(assembled_path: str, model: str = "llama3"):
-    with open(assembled_path, 'r') as f:
-        story_data = f.read()
+async def run_ollama_story(briefcase_path: str, model: str = "llama3"):
+    """
+    Executes a Value Story against a local Ollama instance.
+    Handles Prompt Construction, Execution, and Product Saving.
+    """
+    path = Path(briefcase_path)
+    with open(path, 'r') as f:
+        story = yaml.safe_load(f)
 
-    prompt = f"Execute this AVS Value Story YAML:\n\n{story_data}"
-    url = "http://localhost:11434/api/generate"
-    payload = {"model": model, "prompt": prompt, "stream": False}
+    # 1. Construct the System Prompt (The Agile Persona)
+    system_prompt = (
+        f"You are operating as: {story['goal']['as_a']}\n"
+        f"Your Goal: {story['goal']['i_want']}\n"
+        f"The Purpose: {story['goal']['so_that']}\n\n"
+        "Follow these execution steps precisely:\n"
+    )
+    
+    for step in story['instructions']:
+        system_prompt += f"- Step {step['step_number']}: {step['action']} (Validation: {step['validation_rule']})\n"
 
-    with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), transient=True) as progress:
-        progress.add_task(description=f"Local Agent ({model}) is thinking...", total=None)
-        async with httpx.AsyncClient(timeout=120.0) as client:
-            try:
-                response = await client.post(url, json=payload)
+    # 2. Construct the Context Payload
+    user_payload = "CONTEXT ASSETS:\n"
+    for item in story['context_manifest']:
+        content = item.get('content', '[Context Missing - Assemble required]')
+        user_payload += f"--- START {item['default_path']} ---\n{content}\n--- END ---\n"
+
+    user_payload += "\n\nBased on the context above, produce the final product now."
+
+    # 3. Call Ollama with a Spinner
+    # Use 127.0.0.1 to avoid IPv6 resolution issues common on macOS 'localhost'
+    base_url = "http://127.0.0.1:11434"
+    generate_url = f"{base_url}/api/generate"
+    
+    payload = {
+        "model": model,
+        "prompt": user_payload,
+        "system": system_prompt,
+        "stream": False,
+        "options": {
+            "temperature": 0.2  # Keep it precise for value stories
+        }
+    }
+
+    generated_text = ""
+    with Live(Spinner("dots", text=f"Agent ({model}) is thinking..."), refresh_per_second=10, transient=True):
+        try:
+            async with httpx.AsyncClient(timeout=180.0) as client:
+                # First, verify the model exists
+                tags_res = await client.get(f"{base_url}/api/tags")
+                if tags_res.status_code == 200:
+                    models = [m['name'] for m in tags_res.json().get('models', [])]
+                    if not any(model in m for m in models):
+                        console.print(f"[yellow]⚠ Warning:[/yellow] Model '{model}' not found. Run 'ollama pull {model}'")
+                
+                # Execute generation
+                response = await client.post(generate_url, json=payload)
+                
+                if response.status_code == 404:
+                    console.print(f"[red]Error:[/red] Ollama endpoint not found. Ensure Ollama is running in your menu bar.")
+                    return
+                    
+                response.raise_for_status()
                 result = response.json()
-                console.print("\n[bold green]Product Generated Locally:[/bold green]")
-                console.print(result.get("response", ""))
-            except Exception as e:
-                console.print(f"[red]Execution Error:[/red] {str(e)}")
+                generated_text = result.get("response", "")
+        except httpx.ConnectError:
+            console.print(f"[red]Error:[/red] Could not connect to Ollama. Is the app running?")
+            return
+        except Exception as e:
+            console.print(f"[red]Error communicating with Ollama:[/red] {e}")
+            return
+
+    # 4. The Filing Clerk: Save the Product
+    if generated_text:
+        product_cfg = story.get('product', {})
+        output_dir = Path(product_cfg.get('output_path', 'outputs'))
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        # Determine Filename
+        filename = f"{story['metadata']['story_id']}_output.md"
+        save_path = output_dir / filename
+        
+        save_path.write_text(generated_text)
+        
+        console.print(f"\n[bold green]✓ Product Saved Successfully[/bold green]")
+        console.print(f"  Location: [bold]{save_path}[/bold]")
+        console.print("\n[dim]Preview of Generated Content:[/dim]")
+        console.print(Markdown(generated_text[:500] + "..." if len(generated_text) > 500 else generated_text))
+    else:
+        console.print("[yellow]Agent returned an empty response.[/yellow]")

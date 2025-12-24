@@ -1,72 +1,69 @@
-# ==============================================================================
-# Value Story Logic: VS-002 Resume Generation
-#
-# This file contains the Goal and Instructions for the "Resume Generation"
-# Value Story (VS-002). It is designed to be ingested by the
-# 'assemble_prompt.py' script.
-#
-# INPUT: Strategic Plan (VS-001 Output) + Raw Resume + Job Description
-# OUTPUT: A tailored Markdown Resume
-# ==============================================================================
+# VS-002: Resume Generation
+```
+ARCHITECT'S GUIDE: VS-002
+This story executes the actual drafting phase. It uses the strategy
+produced in VS-001 to transform a raw profile into a targeted deliverable.
+```
+metadata:
+  story_id: "VS-002"
+  version: "1.2"
+  author: "Patrick Heaney"
+  status: "active"
+  # assembled_at: null  # Populated by 'avs assemble'
 
-# THE GOAL: The "Minimum Unique Information" needed to produce the product.
-# This defines the "North Star" for the Agent's internal reasoning loop.
-
+# THE GOAL: The "North Star" for the Agentic-Agent.
 goal:
-  outcome_statement: "Generate a fully tailored resume in Markdown format that strictly adheres to the provided Strategic Plan and targets the specific job description."
-  success_metrics:
-    - "Resume includes all 'Key Additions' and 'Tailoring Actions' specified in the Strategic Plan."
-    - "Resume uses specific keywords from the Job Description (e.g., 'B2B SaaS', 'NLP')."
-    - "Summary section is rewritten to position the candidate as a 'Technical Product Leader'."
+  as_a: "As a Career Transformation Agent"
+  i_want: >
+    Generate a fully tailored resume in Markdown format that strictly adheres to the provided 
+    Strategic Plan and targets the specific job description.
+    - Requirement 1: Resume must include all 'Key Additions' and 'Tailoring Actions' from the Strategic Plan.
+    - Requirement 2: Summary section must position the candidate as a 'Technical Product Leader'.
+    - Requirement 3: Use specific keywords from the JD (e.g., 'B2B SaaS', 'NLP').
+  so_that: >
+    The candidate presents a perfectly aligned professional narrative that passes both 
+    ATS and human screening filters by demonstrating exact fit for the role.
 
 # INSTRUCTIONS: Must be "Algorithmically Legible."
-# Precise enough for AI execution, clear enough for Human audit.
-
 instructions:
   reasoning_pattern: "Planning"
   execution_steps:
     - step: 1
       action: "Review the 'Strategic Plan' to identify specific required changes, keyword insertions, and thematic pivots."
-      validation_rule: "Agent has a mental list of 'must-have' edits."
+      validation_rule: "Agent has a mental list of 'must-have' edits derived from the strategy."
     - step: 2
-      action: "Rewrite the 'Professional Summary' of the Raw Resume. Incorporate the 'Key Phrase to Add' from the Strategic Plan."
+      action: "Rewrite the 'Professional Summary' of the Raw Resume, incorporating 'Key Phrases' from the Strategic Plan."
       validation_rule: "Summary explicitly mentions 'Computer Science background' and 'MBA'."
     - step: 3
-      action: "Reconstruct the 'Experience' section. For each role, apply the specific 'Tailoring Actions' defined in the Strategic Plan (e.g., changing 'specs' to 'PRDs')."
+      action: "Reconstruct the 'Experience' section, applying 'Tailoring Actions' (e.g., changing 'specs' to 'PRDs')."
       validation_rule: "All generic terms flagged in the plan are replaced with specific keywords."
     - step: 4
-      action: "Optimize the 'Skills' section. Re-order and add keywords (NLP, AWS, Agile) as directed by the plan."
+      action: "Optimize the 'Skills' section by re-ordering and adding keywords as directed by the plan."
       validation_rule: "Skills section prioritizes Technical and AI-relevant skills."
     - step: 5
       action: "Output the final resume in clean, standard Markdown format."
-      validation_rule: "Output contains ONLY the resume content, no conversational filler."
-
+      validation_rule: "Output contains ONLY the resume content, with zero conversational filler."
   constraints:
-    - "You may strategically reframe and re-prioritize facts from the raw_resume You MUST NOT invent, embellish, or infer any new facts, skills, metrics, or experiences outside of this sources. This guardrail is absolute."
+    - "You MUST NOT invent, embellish, or infer any new facts outside of the provided sources."
     - "Do not remove the 'Education' section."
     - "Save the generated resume to 'company_job-title_Tailored-Resume.md'."
 
-product:
-  type: "Document"
-  format: "Markdown"
-  handoff_target: "VS-003-audit-refine" # Assuming a next step
-  output_path: "illustrative-example"
-
 # CONTEXT MANIFEST: The "Bill of Materials" for this Value Story.
-# Defines what external files/data must be assembled by the script.
-
 context_manifest:
   - key: "strategic_plan"
     description: "The execution plan generated by VS-001."
-    required: true
     default_path: "illustrative-example/InnovateCorp_Senior-Product-Manager-AI-Solutions_Strategic-Plan.md"
-
+    # content: null  # Populated by 'avs assemble'
   - key: "raw_resume"
-    description: "The candidate's original resume."
-    required: true
+    description: "The candidate's original, untailored resume."
     default_path: "illustrative-example/raw-resume.md"
-
   - key: "job_description"
-    description: "The target job description (for reference)."
-    required: true
+    description: "The target job description for keyword reference."
     default_path: "illustrative-example/job-description.md"
+
+# PRODUCT: The expected deliverable.
+product:
+  type: "Document"
+  format: "Markdown"
+  output_path: "illustrative-example/"
+  handoff_target: "VS-003-audit-refine"
