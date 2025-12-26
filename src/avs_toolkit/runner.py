@@ -23,22 +23,26 @@ async def run_ollama_story(briefcase_path: str, model: str = "llama3"):
         f"You are operating as: {story['goal']['as_a']}\n"
         f"Your Goal: {story['goal']['i_want']}\n"
         f"The Purpose: {story['goal']['so_that']}\n\n"
+        f"Reasoning Pattern: {story['instructions'].get('reasoning_pattern', 'Standard')}\n\n"
         "Follow these execution steps precisely:\n"
     )
     
-    for step in story['instructions']:
+    # Handle the new 'execution_steps' structure from US-002
+    steps = story['instructions'].get('execution_steps', [])
+    for step in steps:
         system_prompt += f"- Step {step['step_number']}: {step['action']} (Validation: {step['validation_rule']})\n"
 
     # 2. Construct the Context Payload
     user_payload = "CONTEXT ASSETS:\n"
     for item in story['context_manifest']:
         content = item.get('content', '[Context Missing - Assemble required]')
-        user_payload += f"--- START {item['default_path']} ---\n{content}\n--- END ---\n"
+        # Use filename as identifier if default_path is complex
+        display_name = Path(item.get('default_path', 'unknown')).name
+        user_payload += f"--- START {display_name} ---\n{content}\n--- END ---\n"
 
     user_payload += "\n\nBased on the context above, produce the final product now."
 
     # 3. Call Ollama with a Spinner
-    # Use 127.0.0.1 to avoid IPv6 resolution issues common on macOS 'localhost'
     base_url = "http://127.0.0.1:11434"
     generate_url = f"{base_url}/api/generate"
     
@@ -48,7 +52,7 @@ async def run_ollama_story(briefcase_path: str, model: str = "llama3"):
         "system": system_prompt,
         "stream": False,
         "options": {
-            "temperature": 0.2  # Keep it precise for value stories
+            "temperature": 0.2
         }
     }
 
@@ -56,18 +60,14 @@ async def run_ollama_story(briefcase_path: str, model: str = "llama3"):
     with Live(Spinner("dots", text=f"Agent ({model}) is thinking..."), refresh_per_second=10, transient=True):
         try:
             async with httpx.AsyncClient(timeout=180.0) as client:
-                # First, verify the model exists
-                tags_res = await client.get(f"{base_url}/api/tags")
-                if tags_res.status_code == 200:
-                    models = [m['name'] for m in tags_res.json().get('models', [])]
-                    if not any(model in m for m in models):
-                        console.print(f"[yellow]⚠ Warning:[/yellow] Model '{model}' not found. Run 'ollama pull {model}'")
-                
                 # Execute generation
                 response = await client.post(generate_url, json=payload)
                 
                 if response.status_code == 404:
-                    console.print(f"[red]Error:[/red] Ollama endpoint not found. Ensure Ollama is running in your menu bar.")
+                    console.print(f"[red]Error:[/red] Ollama endpoint not found.")
+                    return
+                elif response.status_code == 400:
+                    console.print(f"[red]Error:[/red] Bad request. Does model '{model}' exist? Run 'ollama pull {model}'")
                     return
                     
                 response.raise_for_status()
