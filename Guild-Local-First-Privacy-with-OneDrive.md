@@ -25,7 +25,14 @@ OneDrive/
 
 ## 3. Initial Setup
 
-### Step A: Clone the Tool
+### Step A: Create Your Workspace
+
+Create a separate folder for your private content:
+```
+mkdir -p ~/OneDrive/AVS-Management/My-Value-Streams
+```
+
+### Step B: Clone the Tool
 
 Open your terminal and move to your OneDrive directory:
 ```
@@ -33,13 +40,6 @@ cd ~/OneDrive/AVS-Management
 git clone [https://github.com/PatrickHeaney/avs-value-story.git](https://github.com/PatrickHeaney/avs-value-story.git) avs-toolkit
 cd avs-toolkit
 uv sync
-```
-
-### Step B: Create Your Workspace
-
-Create a separate folder for your private content:
-```
-mkdir -p ~/OneDrive/AVS-Management/My-Value-Streams
 ```
 
 ## 4. Execution Workflow (Running Across Folders)
