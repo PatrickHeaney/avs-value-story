@@ -103,7 +103,7 @@ Before diving into the technical setup, you can explore a complete Illustrative 
 Ensure you have `uv` installed on your system:
 Explore the Templates: Check the /templates folder for YAML schemas for creating your first Value Story.
 ```
-curl -LsSf [https://astral.sh/uv/install.sh](https://astral.sh/uv/install.sh) | sh
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 ## 2. Installation
 
