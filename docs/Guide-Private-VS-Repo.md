@@ -14,7 +14,6 @@ cd my-private-value-stream
 
 To ensure you don't accidentally push your private resumes, strategy documents, or business logic back to the public AVS repo, delete the existing `.git` history.
 ```
-# Removes all git history and remote links
 rm -rf .git
 ```
 ## 3. Initialize Your Private Repository

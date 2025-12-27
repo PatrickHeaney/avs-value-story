@@ -100,11 +100,20 @@ Before diving into the technical setup, you can explore a complete Illustrative 
 
 ## 1. Prerequisites
 
-Ensure you have `uv` installed on your system:
-Explore the Templates: Check the /templates folder for YAML schemas for creating your first Value Story.
+### For Non-Developers
+Follow the detailed instructions in the [Guide-Setup-for-Non-Developers](./docs/Guide-Setup-for-Non-Developers.md)
+Ensure you have `homebrew` installed on your system:
+### For Developers
+Verify installation on macOS and Windows (assuming Git Bash or similar shell on Windows)
 ```
-curl -LsSf https://astral.sh/uv/install.sh | sh
+if command -v uv &> /dev/null; then
+    echo "uv is installed. Version information:"
+    uv --version
+else
+    echo "uv is not installed or not found in the system's PATH."
+fi
 ```
+If `uv` is not installed, I included instructions in Phase 5 of the [Setup for Non-Developers](./docs/Guide-Setup-for-Non-Developers.md) guide.
 ## 2. Installation
 
 Clone the repository and sync the environment:

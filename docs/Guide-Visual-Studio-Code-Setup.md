@@ -27,7 +27,7 @@ This allows you to categorize your human-in-the-loop guidance.
 
 ## 4. Mermaid Editor
 
-Extension ID: tomoyukim.vscode-mermaid-editor
+Extension ID: `tomoyukim.vscode-mermaid-editor`
 
 - **Why for AVS:** Since the AVS architecture is depicted using Mermaid scripts in your ARCHITECTURE.md, this allows you to preview your Agentic Value Stream diagrams in real-time as you modify the flow of agency.
 
