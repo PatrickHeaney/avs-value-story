@@ -109,7 +109,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 Clone the repository and sync the environment:
 ```
-git clone [https://github.com/PatrickHeaney/avs-value-story.git](https://github.com/PatrickHeaney/avs-value-story.git)
+git clone https://github.com/PatrickHeaney/avs-value-story.git
 cd avs-value-story
 uv sync
 ```
